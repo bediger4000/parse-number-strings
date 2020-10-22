@@ -33,4 +33,4 @@ whatever it may be?
 
 The state machine I ended up with is more elaborate than I'd like.
 
-![state machine](statemachine.png?raw=true]
+![state machine](statemachine.png?raw=true)
