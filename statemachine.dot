@@ -1,0 +1,45 @@
+digraph dg {
+	start [label="start"];
+	fail [label="not a number"];
+	success [label="is a number"];
+	signfound;
+	digit;
+	decimalpoint;
+	moredigits;
+	foundexp;
+
+	start -> signfound [label="+/-"];
+	start -> digit [label="[0-9]"];
+	start -> dotfound [label="'.'"];
+	dotfound -> digit [label="[0-9]"];
+
+	signfound -> digit [label="[0-9]"];
+	signfound -> dotfound [label="'.'"];
+
+	digit -> success [label="EOS"];
+	digit -> digit [label="[0-9]"];
+	digit -> decimalpoint [label="'.'"];
+	digit -> foundexp [label="E/e"];
+
+	decimalpoint -> success [label="EOS"];
+	decimalpoint -> moredigits [label="[0-9]"];
+	decimalpoint -> foundexp [label="E/e"];
+	moredigits -> moredigits [label="[0-9]"];
+	moredigits -> success [label="EOS"];
+	moredigits -> foundexp [label="E/e"];
+	foundexp -> expsign [label="+/-"];
+	foundexp  -> expdigits  [label="[0-9]"];
+	expsign  -> expdigits  [label="[0-9]"];
+	expdigits  -> success [label="EOS"];
+	expdigits  -> expdigits  [label="[0-9]"];
+
+	start -> fail [label="anything else"];
+	signfound -> fail [label="anything else"];
+	dotfound -> fail [label="anything else"];
+	digit -> fail [label="anything else"];
+	decimalpoint -> fail [label="anything else"];
+	moredigits -> fail [label="anything else"];
+	expsign -> fail [label="anything else"];
+	foundexp -> fail [label="anything else"];
+	expdigits -> fail [label="anything else"];
+}
