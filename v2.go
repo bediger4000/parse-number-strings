@@ -8,7 +8,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"unicode"
 )
 
 type State int
@@ -28,16 +27,21 @@ const (
 )
 
 func main() {
-	stringNumber := os.Args[1]
 
-	/* String representation of a number:
-	* optional "-" or "+"
-	* followed by one or more digits ("0" through "9")
-	* optional "."
-	* optional "e" or "E"
-	  * followed by 1 non-zero digit, with an option digit after it
-	*/
+	for _, stringNumber := range os.Args[1:] {
 
+		state := isNumber(stringNumber)
+
+		if state == success {
+			fmt.Printf("%q represents a number\n", stringNumber)
+		}
+		if state == fail {
+			fmt.Printf("%q does not represent a number\n", stringNumber)
+		}
+	}
+}
+
+func isNumber(stringNumber string) State {
 	var state State = start
 
 	runes := []rune(stringNumber)
@@ -57,7 +61,7 @@ func main() {
 			if runes[idx] == '.' {
 				state = dotfound
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = digit
 			}
 			idx++
@@ -69,7 +73,7 @@ func main() {
 			if runes[idx] == '.' {
 				state = dotfound
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = digit
 			}
 			idx++
@@ -78,7 +82,7 @@ func main() {
 			if idx >= ln {
 				continue
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = digit
 			}
 			idx++
@@ -91,7 +95,7 @@ func main() {
 			if runes[idx] == '.' {
 				state = decimalpoint
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = digit
 			}
 			if runes[idx] == 'E' || runes[idx] == 'e' {
@@ -107,7 +111,7 @@ func main() {
 			if runes[idx] == 'E' || runes[idx] == 'e' {
 				state = foundexp
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = moredigits
 			}
 			idx++
@@ -119,7 +123,7 @@ func main() {
 			if runes[idx] == '+' || runes[idx] == '-' {
 				state = expsign
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = expdigits
 			}
 			idx++
@@ -128,7 +132,7 @@ func main() {
 			if idx >= ln {
 				continue
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = expdigits
 			}
 			idx++
@@ -138,7 +142,7 @@ func main() {
 				state = success
 				continue
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = expdigits
 			}
 			idx++
@@ -148,7 +152,7 @@ func main() {
 				state = success
 				continue
 			}
-			if unicode.IsDigit(runes[idx]) {
+			if isDigit(runes[idx]) {
 				state = moredigits
 			}
 			if runes[idx] == 'E' || runes[idx] == 'e' {
@@ -157,11 +161,12 @@ func main() {
 			idx++
 		}
 	}
+	return state
+}
 
-	if state == success {
-		fmt.Printf("%q represents a number\n", stringNumber)
+func isDigit(r rune) bool {
+	if r >= '0' && r <= '9' {
+		return true
 	}
-	if state == fail {
-		fmt.Printf("%q does not represent a number\n", stringNumber)
-	}
+	return false
 }
