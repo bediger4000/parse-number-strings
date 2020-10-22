@@ -94,6 +94,9 @@ func main() {
 			if unicode.IsDigit(runes[idx]) {
 				state = digit
 			}
+			if runes[idx] == 'E' || runes[idx] == 'e' {
+				state = foundexp
+			}
 			idx++
 		case decimalpoint:
 			state = fail
