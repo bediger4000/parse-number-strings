@@ -42,7 +42,7 @@ I did this problem in Go. I found 3 ways to do it.
 uses Go's strconv functions to parse and verify.
 * [Hand-coded state machine](v2.go) that only uses fmt, os packages.
 * [Regular expression](v3.go), using a regular expression to
-decided number/not a number
+decide number/not a number
 
 There's probably other, less savory ways.
 
@@ -53,6 +53,11 @@ as number representations ".0" "0.0E0", "019"
 and a few other things that are OK,
 but are probably not ever written down as numbers by a human.
 I don't know how important this is.
+
+I probably should have used a special Unicode code point for end-of-string (EOS).
+That would make the code look a lot more regular,
+instead of having a test for index into the string representation
+less than length-of-string. 
 
 The approach of using a language's standard library functions
 to parse and evaluate a string seems too easy for the "[Hard]" rating,
