@@ -46,7 +46,7 @@ decide number/not a number
 
 There's probably other, less savory ways.
 
-The standard library conversion function version is probably
+The standard library conversion function version
 gives the answers you'd most like.
 Both regular expression and the state machine version will accept
 as number representations ".0" "0.0E0", "019"
@@ -55,8 +55,8 @@ but are probably not ever written down as numbers by a human.
 I don't know how important this is.
 
 I probably should have used a special Unicode code point for end-of-string (EOS).
-That would make the code look a lot more regular,
-instead of having a test for index into the string representation
+That would make the state machine code look a lot more regular.
+It has a test for index into the string representation
 less than length-of-string. 
 
 The approach of using a language's standard library functions
@@ -80,7 +80,7 @@ It's too loosely stated.
 ### State Machine
 
 The state machine I ended up with is more elaborate than I'd like.
-I did have the most fun with the state machine version.
+Because I had the most fun with the state machine version,
 I want to record the state machine for posterity.
 
 ![state machine](statemachine.png?raw=true)
